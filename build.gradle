@@ -39,3 +39,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// bootJar 설정 추가
+bootJar {
+    enabled = true
+}

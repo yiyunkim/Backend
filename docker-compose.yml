@@ -1,0 +1,32 @@
+# MySQL 컨테이너가 먼저 시작되고
+# 그 다음 Spring Boot 애플리케이션이 빌드되어 시작됩니다
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_DATABASE: yiyunkim
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306" # 로컬포트:도커내포트 - 로컬의 3306(3307로 쓰기도 함) 포트를 컨테이너의 3306 포트에 매핑
+      # 도커 컨테이너를 마치 로컬에서 직접 실행하는 것처럼 사용 가능
+    volumes:
+      - mysql-data:/var/lib/mysql
+    
+  backend:
+    build: .
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/yiyunkim
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+
+volumes:
+  mysql-data:
