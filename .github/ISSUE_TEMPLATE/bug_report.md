@@ -1,15 +1,6 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
-name: Bug report
-about: Create a report to help us improve
 title: ":bug: [BUG]"
 labels: "\U0001F41E Bug"
 assignees: ''
