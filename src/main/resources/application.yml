@@ -8,12 +8,17 @@ spring:
       request-timeout: 600000
 
   profiles:
-    include: local
+    include: local, jwt
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: 6379
 
   jpa:
     hibernate:
@@ -25,3 +30,8 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
+jwt:
+  expiration:
+    access: ${ACCESS_EXPIRATION:1800000}
+    refresh: ${REFRESH_EXPIRATION:2592000000}
+  secret: ${JWT_SECRET:test1234tes1tte2st1234test1te!stte7stt@#e4sttes5ttest2testtest1234123415215161231}
