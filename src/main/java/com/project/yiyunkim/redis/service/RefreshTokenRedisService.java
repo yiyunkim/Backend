@@ -26,11 +26,4 @@ public class RefreshTokenRedisService {
         return refreshTokenRepository.findById(userId);
     }
 
-    public boolean deleteRefreshToken(Long userId){
-        if(refreshTokenRepository.existsById(userId)){
-            refreshTokenRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
 }
