@@ -1,5 +1,7 @@
 package com.project.yiyunkim.security.config;
 
+import com.project.yiyunkim.security.filter.JwtAuthorizationFilter;
+import com.project.yiyunkim.security.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,11 +25,15 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+
     private static final String[] WHITE_LIST={
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/login/**",
-            "/"
+            "/auth/**",
+            "/error"
     };
 
     @Bean
@@ -36,8 +44,11 @@ public class SecurityConfig {
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(withDefaults())
                 .authorizeHttpRequests(auth->auth.requestMatchers(WHITE_LIST).permitAll()
-                        .anyRequest().authenticated());
-
+                        .anyRequest().authenticated())
+                //인가필터 설정
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                //필터 예외 설정
+                .addFilterBefore(jwtExceptionFilter, jwtAuthorizationFilter.getClass());
 
         return http.build();
     }
