@@ -8,7 +8,7 @@ spring:
       request-timeout: 600000
 
   profiles:
-    include: local, jwt
+    include: local, jwt, oauth
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
