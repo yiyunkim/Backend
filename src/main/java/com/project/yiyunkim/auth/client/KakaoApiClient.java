@@ -4,6 +4,7 @@ import com.project.yiyunkim.auth.dto.response.KakaoUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -26,8 +27,8 @@ public class KakaoApiClient {
 
     private final RestTemplate restTemplate;
 
-    public KakaoApiClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public KakaoApiClient(RestTemplateBuilder builder) {
+        this.restTemplate = builder.build();
     }
 
     //액세스 토큰으로 카카오 사용자 정보 조회
